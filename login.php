@@ -9,8 +9,8 @@ $loginErr = "";
 
 //als er iets gepost is, word de volgende stuk code uitgevoerd
 //de ingevoerde password wordt gehashed door MD5
-if(!empty($_POST)){
-    $email = ($_POST["email"]);
+if (!empty($_POST)) {
+    $email = (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL));
     $password = md5(($_POST["password"]));
 
     //sql query die de code, email en password van de tabel ophaalt, en voor login wordt email en password gebruikt
@@ -20,7 +20,7 @@ if(!empty($_POST)){
 
     //de geretourneerde waarde worden gepost om het in de website te kunnen gebruiken
     $count = mysqli_num_rows($result);
-    if($count == 1) {
+    if ($count == 1) {
         session_start();
         $_SESSION["user_id"] = $row["user_id"];
         $_SESSION["user_login"] = $email;
@@ -29,7 +29,7 @@ if(!empty($_POST)){
         $_SESSION["user_type"] = $row["usertype"];
 
         header('location: index.php');
-    }else {
+    } else {
         //bij een verkeerde email of wachtwoord wordt er een melding gegeven
         $loginErr = "Verkeerde email en/of wachtwoord";
     }
@@ -49,33 +49,42 @@ if(!empty($_POST)){
     <link href="https://fonts.googleapis.com/css?family=Quattrocento&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
 </head>
 <body>
-    <h1 class="titel">BiNaSk</h1>
-    <nav class="navbar navbar-default">
-        <ul class="nav navbar-nav">
-            <li><a href="index.php">Startpagina</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="login.php">Log in</a></li>
-            <li><a href="registratie.php">Registreer</a></li>
-        </ul>
-    </nav>
+<h1 class="titel">BiNaSk</h1>
+<nav class="navbar navbar-default">
+    <ul class="nav navbar-nav navbar-right">
+        <?php
 
-    <form class="form-login" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-        <h1 class="h1 mb-3 text-center">Inloggen</h1>
-        <div class="form-group">
-            <label class="labels" for="email"><b>Email:</b></label>
-            <input class="form-control input-lg" type="email" placeholder="Email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label class="labels" for="psw"><b>Wachtwoord:</b></label>
-            <input class="form-control input-lg" type="password" placeholder="Wachtwoord" name="password" required>
-            <span class="error"><span class="red"><?php echo $loginErr;?></span></span>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" name="login" type="submit">Inloggen</button>
-    </form>
+        if (!isset($_SESSION["user_id"])) {
+            echo '
+                        <li><a href="login.php">Log in</a></li>
+                        <li><a href="registratie.php">Registreer</a></li>
+                     ';
+        }
+
+
+        if (isset($_SESSION["user_id"])) {
+            echo '<li><a href="logout.php">Uitloggen</a></li>';
+        }
+
+        ?>
+    </ul>
+</nav>
+
+<form class="form-login" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <h1 class="h1 mb-3 text-center">Inloggen</h1>
+    <div class="form-group">
+        <label class="labels" for="email"><b>Email:</b></label>
+        <input class="form-control input-lg" type="email" placeholder="Email" name="email" required>
+    </div>
+    <div class="form-group">
+        <label class="labels" for="psw"><b>Wachtwoord:</b></label>
+        <input class="form-control input-lg" type="password" placeholder="Wachtwoord" name="password" required>
+        <span class="error"><span class="red"><?php echo $loginErr; ?></span></span>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" name="login" type="submit">Inloggen</button>
+</form>
 
 </body>
 </html>

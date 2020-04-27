@@ -5,34 +5,35 @@ $firstnameErr = $lastnameErr = $emailErr = $passwordErr = $repeatpasswordErr = "
 $firstname = $lastname = $email = $password = $repeatpassword = $hashedpassword = "";
 
 //de $data gaan valideren
-function test_input($data) {
+function test_input($data)
+{
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
 }
 
-if(!empty($_POST)) {
+if (!empty($_POST)) {
 
     //kijkt als er een voornaam ingevuld is
-    if(empty($_POST["firstname"])) {
+    if (empty($_POST["firstname"])) {
         $firstnameErr = "Dit veld mag niet leeg zijn!";
-    }else {
+    } else {
         $firstname = test_input($_POST["firstname"]);
     }
 
     //kijkt als er een achternaam ingevuld is
-    if(empty($_POST["lastname"])) {
+    if (empty($_POST["lastname"])) {
         $lastnameErr = "Dit veld mag niet leeg zijn!";
-    }else {
+    } else {
         $lastname = test_input($_POST["lastname"]);
     }
 
     //kijkt als er een email ingevuld is
-    if(empty($_POST["email"])) {
+    if (empty($_POST["email"])) {
         $emailErr = "Dit veld mag niet leeg zijn!";
-    }else {
-        $email = test_input($_POST["email"]);
+    } else {
+        $email = test_input($_POST["email"], FILTER_VALIDATE_EMAIL);
     }
 
     //kijkt als er geen andere email bestaat
@@ -44,31 +45,31 @@ if(!empty($_POST)) {
     }
 
     //kijkt als er een NHL-stenden email gebruikt wordt
-    if(preg_match("/(student.nhlstenden|nhlstenden)/i", $email)){
+    if (preg_match("/(student.nhlstenden|nhlstenden)/i", $email)) {
         //echo "werkt";
-    }else {
+    } else {
         $emailErr = "Gebruik een NHL-Stenden emailadres!";
     }
 
     //kijkt als er een password ingevuld is
-    if(empty($_POST["password"])){
+    if (empty($_POST["password"])) {
         $passwordErr = "Dit veld mag niet leeg zijn!";
-    }else {
+    } else {
         $password = test_input($_POST["password"]);
     }
 
     //kijkt als er een herhaalde password ingevuld is
-    if(empty($_POST["repeatpassword"])) {
+    if (empty($_POST["repeatpassword"])) {
         $passwordErr = "Dit veld mag niet leeg zijn!";
-    }else {
+    } else {
         $repeatpassword = test_input($_POST["repeatpassword"]);
     }
 
     //kijkt als herhaalde password en password gelijk zijn
     //als herhaalde password en password gelijk zijn dan wordt de password gehashed met md5
-    if($password == $repeatpassword) {
+    if ($password == $repeatpassword) {
         $hashedpassword = md5($password);
-    }else {
+    } else {
         $repeatpasswordErr = "Wachtwoorden zijn niet hetzelfde!";
     }
 
@@ -77,7 +78,7 @@ if(!empty($_POST)) {
     //echo $errors;
 
     //als er geen errors zijn dan wordt de volgende stuk code gevoerd
-    if(empty($errors) == true) {
+    if (empty($errors) == true) {
         //SQL Query voor her invoeren van al de gegevens, iedereen krijgt eerst als usertype student
         $sql = "INSERT INTO user(firstname, lastname, email, password, usertype) VALUES ('$firstname', '$lastname', '$email', '$hashedpassword', 'student')";
         //SQL Query uitvoeren en in de variabele $result verwerken
@@ -86,9 +87,9 @@ if(!empty($_POST)) {
         //echo $sql;
 
         //als er geen foutmeldingen zijn wordt je omgeleid naar de login pagina
-        if($result == true){
+        if ($result == true) {
             header('location: login.php');
-        }else {
+        } else {
             //bij een foutmelding wordt de foutmelding op het scherm geprint
             echo mysqli_errno();
         }
@@ -114,44 +115,42 @@ if(!empty($_POST)) {
 </head>
 
 <body>
-    <h1 class="titel">BiNaSk</h1>
-    <nav class="navbar navbar-default">
-        <ul class="nav navbar-nav">
-            <li><a href="index.php">Startpagina</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="login.php">Log in</a></li>
-            <li><a href="registratie.php">Registreer</a></li>
-        </ul>
-    </nav>
-    <form class="form-registratie" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-        <h1 class="h1 mb-3 text-center">Registratie</h1>
-        <div class="form-group">
-            <label class="labels" for="voornaam"><b>Voornaam:</b></label>
-            <input class="form-control input-lg" type="text" placeholder="Voornaam" name="firstname" required>
-            <span class="error"><span class="red"><?php echo $firstnameErr;?></span></span>
-        </div>
-        <div class="form-group">
-            <label class="labels" for="achternaam"><b>Achternaam:</b></label>
-            <input class="form-control input-lg" type="text" placeholder="Achternaam" name="lastname" required>
-            <span class="error"><span class="red"><?php echo $lastnameErr;?></span></span>
-        </div>
-        <div class="form-group">
-            <label class="labels" for="email"><b>Email:</b></label>
-            <input class="form-control input-lg" type="text" placeholder="Email" name="email" required>
-            <span class="error"><span class="red"><?php echo $emailErr;?></span></span>
-        </div>
-        <div class="form-group">
-            <label class="labels" for="password"><b>Wachtwoord:</b></label>
-            <input class="form-control input-lg" type="password" placeholder="Wachtwoord" name="password" required>
-            <span class="error"><span class="red"><?php echo $passwordErr;?></span></span>
-        </div>
-        <div class="form-group">
-            <label class="labels" for="repeatpassword"><b>Herhaal wachtwoord:</b></label>
-            <input class="form-control input-lg" type="password" placeholder="Herhaal Wachtwoord" name="repeatpassword" required>
-            <span class="error"><span class="red"><?php echo $repeatpasswordErr;?></span></span>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" name="register" type="submit">Registreren</button>
-    </form>
+<h1 class="titel">BiNaSk</h1>
+<nav class="navbar navbar-default">
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="login.php">Log in</a></li>
+        <li><a href="registratie.php">Registreer</a></li>
+    </ul>
+</nav>
+<form class="form-registratie" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <h1 class="h1 mb-3 text-center">Registratie</h1>
+    <div class="form-group">
+        <label class="labels" for="voornaam"><b>Voornaam:</b></label>
+        <input class="form-control input-lg" type="text" placeholder="Voornaam" name="firstname" required>
+        <span class="error"><span class="red"><?php echo $firstnameErr; ?></span></span>
+    </div>
+    <div class="form-group">
+        <label class="labels" for="achternaam"><b>Achternaam:</b></label>
+        <input class="form-control input-lg" type="text" placeholder="Achternaam" name="lastname" required>
+        <span class="error"><span class="red"><?php echo $lastnameErr; ?></span></span>
+    </div>
+    <div class="form-group">
+        <label class="labels" for="email"><b>Email:</b></label>
+        <input class="form-control input-lg" type="text" placeholder="Email" name="email" required>
+        <span class="error"><span class="red"><?php echo $emailErr; ?></span></span>
+    </div>
+    <div class="form-group">
+        <label class="labels" for="password"><b>Wachtwoord:</b></label>
+        <input class="form-control input-lg" type="password" placeholder="Wachtwoord" name="password" required>
+        <span class="error"><span class="red"><?php echo $passwordErr; ?></span></span>
+    </div>
+    <div class="form-group">
+        <label class="labels" for="repeatpassword"><b>Herhaal wachtwoord:</b></label>
+        <input class="form-control input-lg" type="password" placeholder="Herhaal Wachtwoord" name="repeatpassword"
+               required>
+        <span class="error"><span class="red"><?php echo $repeatpasswordErr; ?></span></span>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" name="register" type="submit">Registreren</button>
+</form>
 </body>
 </html>
