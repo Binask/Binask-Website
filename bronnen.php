@@ -23,7 +23,76 @@
         <li><a href="logout.php">Uitloggen</a></li>
     </ul>
 </nav>
+<br><br>
+Filter op categorie:<br>
+<?php
 
+
+function ShowCategories($conn){
+    $query = "SELECT DISTINCT(ArtikelCategorie) FROM Artikelen ORDER BY ArtikelCategorie, ArtikelRank";
+    $result = mysqli_query($conn, $query);
+
+    echo '<form action="bronnen.php" method="post">';
+    while($row = mysqli_fetch_array($result)){
+        echo '<input type="radio" name="categorie" value="' . $row['ArtikelCategorie'] . '">' . $row['ArtikelCategorie'] . '<br>';
+    }
+    echo "<input type='submit' value='Filter'><br>";
+    echo '</form>';
+
+
+}
+
+function FilterCategorie($conn){
+
+
+    $categorie = $_POST['categorie'];
+
+    $query = "SELECT * FROM Artikelen WHERE ArtikelCategorie = '$categorie' ORDER BY ArtikelRank ASC";
+    $result = mysqli_query($conn, $query);
+
+    echo "<br><br>";
+    while($row = mysqli_fetch_array($result)){
+        echo "<tr><td><b>" . $row['ArtikelTitel'] . "</b><br><br></td></tr><tr><td>" . $row['ArtikelSamenvatting'] . "<br><br></td></tr><tr><td><a href='" . $row['ArtikelLink'] . "' target='_blank'>" . $row['ArtikelLink'] . "</a>" . "<br><br></td></tr><tr><td>Categorie: " . $row['ArtikelCategorie'] . "<br><br><br><br></td></tr>";  //$row['index'] the index here is a field name
+
+    }
+
+}
+
+function ShowArtikelen($conn){
+    $query = "SELECT * FROM Artikelen ORDER BY ArtikelRank ASC";
+    $result = mysqli_query($conn, $query);
+
+    echo "<br><br><table>";
+
+    while($row = mysqli_fetch_array($result)){
+        echo "<tr><td><b>" . $row['ArtikelTitel'] . "</b><br><br></td></tr><tr><td>" . $row['ArtikelSamenvatting'] . "<br><br></td></tr><tr><td><a href='" . $row['ArtikelLink'] . "' target='_blank'>" . $row['ArtikelLink'] . "</a>" . "<br><br></td></tr><tr><td>Categorie: " . $row['ArtikelCategorie'] . "<br><br><br><br></td></tr>";  //$row['index'] the index here is a field name
+
+    }
+
+    echo "</table>";
+}
+$query = "SELECT DISTINCT(ArtikelCategorie) FROM Artikelen ORDER BY ArtikelCategorie";
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_array($result);
+
+ShowCategories($conn);
+
+if (!empty($_POST['categorie'])) {
+    FilterCategorie($conn);
+}
+else {
+    ShowArtikelen($conn);
+}
+
+
+
+
+//Als er een categorie aangevinkt is dan moeten alleen bronnen met de desbetreffende categorie laten zien worden
+
+
+
+
+?>
 <!--Code om de bronnen te kunnen weergeven-->
 
 </body>
