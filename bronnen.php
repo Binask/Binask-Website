@@ -52,7 +52,7 @@ function FilterCategorie($conn){
 
     echo "<br><br>";
     while($row = mysqli_fetch_array($result)){
-        echo "<tr><td><b>" . $row['ArtikelTitel'] . "</b><br><br></td></tr><tr><td>" . $row['ArtikelSamenvatting'] . "<br><br></td></tr><tr><td><a href='" . $row['ArtikelLink'] . "' target='_blank'>" . $row['ArtikelLink'] . "</a>" . "<br><br></td></tr><tr><td>Categorie: " . $row['ArtikelCategorie'] . "<br><br><br><br></td></tr>";  //$row['index'] the index here is a field name
+        echo "<tr><td><b>" . $row['ArtikelTitel'] . "</b><br><br></td></tr><tr><td>" . $row['ArtikelSamenvatting'] . "<br><br></td></tr><tr><td><a href='" . $row['ArtikelLink'] . "' target='_blank'>" . $row['ArtikelLink'] . "</a>" . "<br><br></td></tr><tr><td>Categorie: " . $row['ArtikelCategorie'] . "<br><br><br><br></td></tr>";
 
     }
 
@@ -65,7 +65,7 @@ function ShowArtikelen($conn){
     echo "<br><br><table>";
 
     while($row = mysqli_fetch_array($result)){
-        echo "<tr><td><b>" . $row['ArtikelTitel'] . "</b><br><br></td></tr><tr><td>" . $row['ArtikelSamenvatting'] . "<br><br></td></tr><tr><td><a href='" . $row['ArtikelLink'] . "' target='_blank'>" . $row['ArtikelLink'] . "</a>" . "<br><br></td></tr><tr><td>Categorie: " . $row['ArtikelCategorie'] . "<br><br><br><br></td></tr>";  //$row['index'] the index here is a field name
+        echo "<tr><td><b>" . $row['ArtikelTitel'] . "</b><br><br></td></tr><tr><td>" . $row['ArtikelSamenvatting'] . "<br><br></td></tr><tr><td><a href='" . $row['ArtikelLink'] . "' target='_blank'>" . $row['ArtikelLink'] . "</a>" . "<br><br></td></tr><tr><td>Categorie: " . $row['ArtikelCategorie'] . "<br><br><br><br></td></tr>";
 
     }
 
@@ -85,15 +85,8 @@ else {
 }
 
 
-
-
-//Als er een categorie aangevinkt is dan moeten alleen bronnen met de desbetreffende categorie laten zien worden
-
-
-
-
 ?>
-<!--Code om de bronnen te kunnen weergeven-->
+
 
 </body>
 </html>
