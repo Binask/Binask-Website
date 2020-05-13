@@ -18,6 +18,11 @@
     <ul class="nav navbar-nav">
         <li><a href="index.php">Startpagina</a></li>
         <li><a href="bronnen.php">Bronnen</a></li>
+        <?
+        if($user_role == 'docent'){
+            echo '<li><a href="toevoegen.php">Bronnen toevoegen</a></li>';
+        }
+        ?>
     </ul>
     <ul class="nav navbar-nav navbar-right">
         <li><a href="logout.php">Uitloggen</a></li>

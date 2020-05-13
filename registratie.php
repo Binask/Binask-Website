@@ -4,14 +4,7 @@ include "database.php";
 $firstnameErr = $lastnameErr = $emailErr = $passwordErr = $repeatpasswordErr = "";
 $firstname = $lastname = $email = $password = $repeatpassword = $hashedpassword = "";
 
-//de $data gaan valideren
-function test_input($data)
-{
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
+
 
 if (!empty($_POST)) {
 
