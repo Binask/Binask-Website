@@ -109,12 +109,9 @@ if (!empty($_POST)) {
 
 <body>
 <h1 class="titel">BiNaSk</h1>
-<nav class="navbar navbar-default">
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="login.php">Log in</a></li>
-        <li><a href="registratie.php">Registreer</a></li>
-    </ul>
-</nav>
+
+<?php include "navbar.php" ?>
+
 <form class="form-registratie" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <h1 class="h1 mb-3 text-center">Registratie</h1>
     <div class="form-group">

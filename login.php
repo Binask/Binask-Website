@@ -52,25 +52,8 @@ if (!empty($_POST)) {
 </head>
 <body>
 <h1 class="titel">BiNaSk</h1>
-<nav class="navbar navbar-default">
-    <ul class="nav navbar-nav navbar-right">
-        <?php
 
-        if (!isset($_SESSION["user_id"])) {
-            echo '
-                        <li><a href="login.php">Log in</a></li>
-                        <li><a href="registratie.php">Registreer</a></li>
-                     ';
-        }
-
-
-        if (isset($_SESSION["user_id"])) {
-            echo '<li><a href="logout.php">Uitloggen</a></li>';
-        }
-
-        ?>
-    </ul>
-</nav>
+<?php include "navbar.php" ?>
 
 <form class="form-login" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <h1 class="h1 mb-3 text-center">Inloggen</h1>

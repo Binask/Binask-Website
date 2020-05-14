@@ -45,20 +45,8 @@ if (!empty($_POST)) {
 </head>
 <body>
 <h1 class="titel">BiNaSk</h1>
-<nav class="navbar navbar-default">
-    <ul class="nav navbar-nav">
-        <li><a href="index.php">Startpagina</a></li>
-        <li><a href="bronnen.php">Bronnen</a></li>
-        <?
-        if($user_role == 'docent'){
-            echo '<li><a href="toevoegen.php">Bronnen toevoegen</a></li>';
-        }
-        ?>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="logout.php">Uitloggen</a></li>
-    </ul>
-</nav>
+
+<?php include "navbar.php" ?>
 
 <!--
 <form action="toevoegen.php" method="post">
