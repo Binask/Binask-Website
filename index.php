@@ -39,15 +39,14 @@
             </div>
             <div class="categorieen">
                 <h2>Categorieën</h2>
-                <p>•Aard, nut en noodzaak van natuurwetenschappen</p>
-                <p>•Leerprocessen, lesopbouw en toesting</p>
-                <p>•Doorlopende leerlijn en samenhang met andere vakken</p>
-                <p>•Begripsontwikkeling</p>
-                <p>•Natuurwetenschappelijke denk- en werkwijzen</p>
-                <p>•Social scientific issues</p>
-                <p>•Practicum didactiek</p>
-                <p>•Digitale didactiek</p>
-                <p>•Vakdidactische persoonlijke professionele ontwikkeling</p>
+                <?
+                $query = "SELECT DISTINCT(ArtikelCategorie) FROM Artikelen ORDER BY ArtikelCategorie, ArtikelRank";
+                $result = mysqli_query($conn, $query);
+
+                while($row = mysqli_fetch_array($result)){
+                    echo "<p>•" . $row['ArtikelCategorie'] . "</p>";
+                }
+                ?>
             </div>
             <div>
                 <h2>Misschien iets voor u.</h2>
