@@ -77,12 +77,8 @@ if (!empty($_POST)) {
         //SQL Query voor her invoeren van al de gegevens, iedereen krijgt eerst als usertype student
         $sql = $conn->prepare("INSERT INTO user(firstname, lastname, email, password, usertype) VALUES (?, ?, ?, ?, 'student')");
         $sql->bind_param("ssss", $firstname, $lastname, $email, $hashedpassword);
-        $sql->execute();
-        //$result = $sql->get_result() or die("Error");
-        //SQL Query uitvoeren en in de variabele $result verwerken
-        //$result = mysqli_query($conn, $sql);
-        //SQL Query op de scherm weergeven
-        //echo $sql;
+
+
 
         //als er geen foutmeldingen zijn wordt je omgeleid naar de login pagina
         if ($sql->execute() == true) {
