@@ -14,8 +14,10 @@ if (!empty($_POST)) {
     $password = md5(($_POST["password"]));
 
     //sql query die de code, email en password van de tabel ophaalt, en voor login wordt email en password gebruikt
-    $sql = "SELECT user_id, firstname, lastname, email, password, usertype FROM user WHERE email = '$email' AND password = '$password'";
-    $result = mysqli_query($conn, $sql);
+    $sql = $conn->prepare("SELECT user_id, firstname, lastname, email, password, usertype FROM user WHERE email = ? AND password = ?");
+    $sql->bind_param("ss", $email, $password);
+    $sql->execute();
+    $result = $sql->get_result() or die("Error");
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
     //de geretourneerde waarde worden gepost om het in de website te kunnen gebruiken

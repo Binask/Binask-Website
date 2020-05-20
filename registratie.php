@@ -30,8 +30,10 @@ if (!empty($_POST)) {
     }
 
     //kijkt als er geen andere email bestaat
-    $check = "SELECT email FROM user WHERE email = '$email'";
-    $result = mysqli_query($conn, $check);
+    $check = $conn->prepare("SELECT email FROM user WHERE email = ?");
+    $check->bind_param("s", $email);
+    $check->execute();
+    $result = $check->get_result() or die("Error");
     $count = mysqli_num_rows($result);
     if ($count > 0) {
         $emailErr = "Dit account bestaat al!";
@@ -73,14 +75,17 @@ if (!empty($_POST)) {
     //als er geen errors zijn dan wordt de volgende stuk code gevoerd
     if (empty($errors) == true) {
         //SQL Query voor her invoeren van al de gegevens, iedereen krijgt eerst als usertype student
-        $sql = "INSERT INTO user(firstname, lastname, email, password, usertype) VALUES ('$firstname', '$lastname', '$email', '$hashedpassword', 'student')";
+        $sql = $conn->prepare("INSERT INTO user(firstname, lastname, email, password, usertype) VALUES (?, ?, ?, ?, 'student')");
+        $sql->bind_param("ssss", $firstname, $lastname, $email, $hashedpassword);
+        $sql->execute();
+        //$result = $sql->get_result() or die("Error");
         //SQL Query uitvoeren en in de variabele $result verwerken
-        $result = mysqli_query($conn, $sql);
+        //$result = mysqli_query($conn, $sql);
         //SQL Query op de scherm weergeven
         //echo $sql;
 
         //als er geen foutmeldingen zijn wordt je omgeleid naar de login pagina
-        if ($result == true) {
+        if ($sql->execute() == true) {
             header('location: login.php');
         } else {
             //bij een foutmelding wordt de foutmelding op het scherm geprint
