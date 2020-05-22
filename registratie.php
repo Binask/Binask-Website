@@ -30,10 +30,8 @@ if (!empty($_POST)) {
     }
 
     //kijkt als er geen andere email bestaat
-    $check = $conn->prepare("SELECT email FROM user WHERE email = ?");
-    $check->bind_param("s", $email);
-    $check->execute();
-    $result = $check->get_result() or die("Error");
+    $check = "SELECT email FROM user WHERE email = '$email'";
+    $result = mysqli_query($conn, $check);
     $count = mysqli_num_rows($result);
     if ($count > 0) {
         $emailErr = "Dit account bestaat al!";
@@ -75,13 +73,14 @@ if (!empty($_POST)) {
     //als er geen errors zijn dan wordt de volgende stuk code gevoerd
     if (empty($errors) == true) {
         //SQL Query voor her invoeren van al de gegevens, iedereen krijgt eerst als usertype student
-        $sql = $conn->prepare("INSERT INTO user(firstname, lastname, email, password, usertype) VALUES (?, ?, ?, ?, 'student')");
-        $sql->bind_param("ssss", $firstname, $lastname, $email, $hashedpassword);
-
-
+        $sql = "INSERT INTO user(firstname, lastname, email, password, usertype) VALUES ('$firstname', '$lastname', '$email', '$hashedpassword', 'student')";
+        //SQL Query uitvoeren en in de variabele $result verwerken
+        $result = mysqli_query($conn, $sql);
+        //SQL Query op de scherm weergeven
+        //echo $sql;
 
         //als er geen foutmeldingen zijn wordt je omgeleid naar de login pagina
-        if ($sql->execute() == true) {
+        if ($result == true) {
             header('location: login.php');
         } else {
             //bij een foutmelding wordt de foutmelding op het scherm geprint
@@ -91,28 +90,11 @@ if (!empty($_POST)) {
         mysqli_close($conn);
     }
 }
+include "head.php";
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Registratie</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="custom.css">
-    <link href="https://fonts.googleapis.com/css?family=Quattrocento&display=swap" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-</head>
-
 <body>
 <h1 class="titel">BiNaSk</h1>
-
 <?php include "navbar.php" ?>
-
 <form class="form-registratie" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <h1 class="h1 mb-3 text-center">Registratie</h1>
     <div class="form-group">

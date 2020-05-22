@@ -5,6 +5,16 @@
     text-align: center;
 }
 
+.filter {
+    padding-left: 0px !important;
+    padding-right: 15px !important;
+}
+
+.bronnen {
+    padding-left: 15px !important;
+    padding-right: 0px !important;
+}
+
 .form-login {
     width: auto;
     max-width: 440px;
@@ -61,4 +71,20 @@
 .search-bar {
     margin-top: 20px;
     width: 100% !important;
+}
+
+hr.split {
+    border-top: 1px solid black;
+}
+
+.center {
+    text-align: center;
+}
+
+.filterbtn {
+    margin-top: 15px;
+}
+
+.radio {
+    margin-left: 5px !important;
 }

@@ -1,22 +1,9 @@
-<?php include "session.php" ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Startpagina</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="custom.css">
-    <link href="https://fonts.googleapis.com/css?family=Quattrocento&display=swap" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-</head>
+<?php include "session.php";
+include "head.php";
+?>
 <body>
 <h1 class="titel">BiNaSk</h1>
-
 <?php include "navbar.php" ?>
-
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -29,11 +16,11 @@
             <div class="categorieen">
                 <h2>Categorieën</h2>
                 <?
-                $query = "SELECT DISTINCT(ArtikelCategorie) FROM Artikelen ORDER BY ArtikelCategorie, ArtikelRank";
+                $query = "SELECT DISTINCT c.category_name FROM Artikelen a JOIN category c ON a.category_id = c.category_id ORDER BY c.category_name, ArtikelRank";
                 $result = mysqli_query($conn, $query);
 
                 while($row = mysqli_fetch_array($result)){
-                    echo "<p>•" . $row['ArtikelCategorie'] . "</p>";
+                    echo "<p>•" . $row['category_name'] . "</p>";
                 }
                 ?>
             </div>

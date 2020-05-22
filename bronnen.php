@@ -1,87 +1,123 @@
-<?php include "session.php" ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Startpagina</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="custom.css">
-    <link href="https://fonts.googleapis.com/css?family=Quattrocento&display=swap" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-</head>
+<?php
+include "session.php";
+include "database.php";
+include "head.php";
+
+function ShowCategories($conn){
+    $query = "SELECT DISTINCT c.category_name FROM Artikelen a JOIN category c ON a.category_id = c.category_id ORDER BY c.category_id, ArtikelRank";
+    $result = mysqli_query($conn, $query);
+
+    echo '<form class="filter-form" action="bronnen.php" method="post">';
+    while($row = mysqli_fetch_array($result)){
+        echo '<div class="radio">';
+        echo '<label><input type="radio" name="categorie" value="' . $row['category_name'] . '"> ' . $row['category_name'] . '</label>';
+        echo '</div>';
+    }
+    echo "<input type='submit' value='Filter' class='btn btn-primary filterbtn'>";
+    echo "<hr>";
+    echo '</form>';
+}
+
+function FilterCategorie($conn){
+    $categorie = $_POST['categorie'];
+
+    $query = "SELECT c.category_name, a.ArtikelTitel, a.ArtikelSamenvatting, a.ArtikelLink, a.ArtikelRank FROM Artikelen a JOIN category c ON a.category_id = c.category_id WHERE category_name = '$categorie' ORDER BY ArtikelRank ASC";
+    $result = mysqli_query($conn, $query);
+
+    while ($row = mysqli_fetch_array($result)) {
+        echo "<table class='categorie'>";
+        echo "<tbody>";
+        echo "<tr><th>" . $row['ArtikelTitel'] . "</th></tr>";
+        echo "<tr><td>" . $row['ArtikelSamenvatting'] . "</td></tr> ";
+        echo "<tr><td>Categorie: " . $row['category_name'] . "</td></tr>";
+        echo "<tr><td><a href='" . $row['ArtikelLink'] . "' target='_blank'>" . $row['ArtikelLink'] . "</a>" . "</td></tr>";
+        echo "</tbody>";
+        echo "</table>";
+        echo "<hr>";
+    }
+}
+
+function ShowArtikelen($conn){
+    $query = "SELECT c.category_name, a.ArtikelTitel, a.ArtikelSamenvatting, a.ArtikelLink, a.ArtikelRank FROM Artikelen a JOIN category c ON a.category_id = c.category_id ORDER BY ArtikelRank ASC";
+    $result = mysqli_query($conn, $query);
+
+    while($row = mysqli_fetch_array($result)){
+        echo "<table class='categorie'>";
+        echo "<tbody>";
+        echo "<tr><th>" . $row['ArtikelTitel'] . "</th></tr>";
+        echo "<tr><td>" . $row['ArtikelSamenvatting'] . "</td></tr> ";
+        echo "<tr><td>Categorie: " . $row['category_name'] . "</td></tr>";
+        echo "<tr><td><a href='" . $row['ArtikelLink'] . "' target='_blank'>" . $row['ArtikelLink'] . "</a>" . "</td></tr>";
+        echo "</tbody>";
+        echo "</table>";
+        echo "<hr>";
+    }
+}
+
+function ShowZoekResultaat($conn){
+    $search = $_POST['search'];
+
+    $query = "SELECT c.category_name, a.ArtikelTitel, a.ArtikelSamenvatting, a.ArtikelLink, a.ArtikelRank FROM Artikelen a JOIN category c ON a.category_id = c.category_id WHERE ArtikelTitel LIKE '%$search%' OR ArtikelSamenvatting LIKE '%$search%' ORDER BY ArtikelRank ASC ";
+    $result = mysqli_query($conn, $query);
+
+    while($row = mysqli_fetch_array($result)){
+        echo "<table class='categorie'>";
+        echo "<tbody>";
+        echo "<tr><th>" . $row['ArtikelTitel'] . "</th></tr>";
+        echo "<tr><td>" . $row['ArtikelSamenvatting'] . "</td></tr> ";
+        echo "<tr><td>Categorie: " . $row['category_name'] . "</td></tr>";
+        echo "<tr><td><a href='" . $row['ArtikelLink'] . "' target='_blank'>" . $row['ArtikelLink'] . "</a>" . "</td></tr>";
+        echo "</tbody>";
+        echo "</table>";
+        echo "<hr>";
+    }
+}
+?>
 <body>
 <h1 class="titel">BiNaSk</h1>
-
 <?php include "navbar.php" ?>
-
 <div class="container">
-    <h1>Bronnen</h1>
-    <br><br>
-    Filter op categorie:<br>
-    <?php
-
-
-    function ShowCategories($conn){
-        $query = "SELECT DISTINCT(ArtikelCategorie) FROM Artikelen ORDER BY ArtikelCategorie, ArtikelRank";
-        $result = mysqli_query($conn, $query);
-
-        echo '<form action="bronnen.php" method="post">';
-        while($row = mysqli_fetch_array($result)){
-            echo '<input type="radio" name="categorie" value="' . $row['ArtikelCategorie'] . '">' . $row['ArtikelCategorie'] . '<br>';
-        }
-        echo "<input type='submit' value='Filter'><br>";
-        echo '</form>';
-
-
-    }
-
-    function FilterCategorie($conn){
-
-
-        $categorie = $_POST['categorie'];
-
-        $query = "SELECT * FROM Artikelen WHERE ArtikelCategorie = '$categorie' ORDER BY ArtikelRank ASC";
-        $result = mysqli_query($conn, $query);
-
-        echo "<br><br>";
-        while($row = mysqli_fetch_array($result)){
-            echo "<tr><td><b>" . $row['ArtikelTitel'] . "</b><br><br></td></tr><tr><td>" . $row['ArtikelSamenvatting'] . "<br><br></td></tr><tr><td><a href='" . $row['ArtikelLink'] . "' target='_blank'>" . $row['ArtikelLink'] . "</a>" . "<br><br></td></tr><tr><td>Categorie: " . $row['ArtikelCategorie'] . "<br><br><br><br></td></tr>";
-
-        }
-
-    }
-
-    function ShowArtikelen($conn){
-        $query = "SELECT * FROM Artikelen ORDER BY ArtikelRank ASC";
-        $result = mysqli_query($conn, $query);
-
-        echo "<br><br><table>";
-
-        while($row = mysqli_fetch_array($result)){
-            echo "<tr><td><b>" . $row['ArtikelTitel'] . "</b><br><br></td></tr><tr><td>" . $row['ArtikelSamenvatting'] . "<br><br></td></tr><tr><td><a href='" . $row['ArtikelLink'] . "' target='_blank'>" . $row['ArtikelLink'] . "</a>" . "<br><br></td></tr><tr><td>Categorie: " . $row['ArtikelCategorie'] . "<br><br><br><br></td></tr>";
-
-        }
-
-        echo "</table>";
-    }
-    $query = "SELECT DISTINCT(ArtikelCategorie) FROM Artikelen ORDER BY ArtikelCategorie";
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_array($result);
-
-    ShowCategories($conn);
-
-    if (!empty($_POST['categorie'])) {
-        FilterCategorie($conn);
-    }
-    else {
-        ShowArtikelen($conn);
-    }
-
-
-    ?>
+    <div class="row">
+        <div class="col-xs-8">
+            <h1>Bronnen</h1>
+        </div>
+        <div class="col-xs-4">
+            <form class="search-bar" action="bronnen.php" method="post">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="Search">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr class="split">
+    <div class="row">
+        <div class="col-xs-3 filter">
+            <h4><b>Filters</b></h4>
+            <hr>
+            <h5><b>Categorie</b></h5>
+            <?php
+            ShowCategories($conn);
+            ?>
+        </div>
+        <div class="col-xs-9 bronnen">
+            <?php
+            if (!empty($_POST['categorie'])) {
+                FilterCategorie($conn);
+            }
+            elseif(!empty($_POST['search'])) {
+                ShowZoekResultaat($conn);
+            }
+            else {
+                ShowArtikelen($conn);
+            }
+            ?>
+        </div>
+    </div>
 </div>
 
 </body>

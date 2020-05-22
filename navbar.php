@@ -10,7 +10,7 @@
             echo "</ul>";
             if ($_SESSION["user_type"] == "docent") {
                 echo "<ul class=\"nav navbar-nav navbar-right\">";
-                echo "<li><a href=\"toevoegen.php\">Bronnen toevoegen</a></li>";
+                echo "<li><a href=\"docent/index.php\">Docenten Pagina</a></li>";
                 echo "</ul>";
             }
         }else {
