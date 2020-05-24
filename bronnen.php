@@ -58,8 +58,10 @@ function ShowArtikelen($conn){
 function ShowZoekResultaat($conn){
     $search = test_input($_POST['search']);
 
-    $query = "SELECT c.category_name, a.ArtikelTitel, a.ArtikelSamenvatting, a.ArtikelLink, a.ArtikelRank FROM Artikelen a JOIN category c ON a.category_id = c.category_id WHERE ArtikelTitel LIKE '%$search%' OR ArtikelSamenvatting LIKE '%$search%' ORDER BY ArtikelRank ASC ";
-    $result = mysqli_query($conn, $query);
+    $query = $conn->prepare("SELECT c.category_name, a.ArtikelTitel, a.ArtikelSamenvatting, a.ArtikelLink, a.ArtikelRank FROM Artikelen a JOIN category c ON a.category_id = c.category_id WHERE ArtikelTitel LIKE CONCAT('%', ?, '%' ) OR ArtikelSamenvatting LIKE CONCAT('%', ?, '%' ) ORDER BY ArtikelRank ASC ");
+    $query->bind_param("ss", $search, $search);
+    $query->execute();
+    $result = $query->get_result() or die("Error");
 
     while($row = mysqli_fetch_array($result)){
         echo "<table class='categorie'>";
