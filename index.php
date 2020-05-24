@@ -7,7 +7,7 @@ include "head.php";
 <div class="container">
     <div class="row">
         <h1>Hallo <?php echo $user_firstname . '!'; ?></h1>
-        <p>Welkom bij de startpagina! Vanuit hier kunt u zich navigeren naar de bronnen die u zoekt. U kunt rechts namelijk zoeken naar een bron. Hieronder staat ook nog een overzicht met alle categorieën.</p>
+        <p>Welkom bij de startpagina! Vanuit hier kunt u zich navigeren naar de bronnen die u zoekt. Hieronder staat ook nog een overzicht met alle categorieën.</p>
         </div>
         <div class="categorieen">
             <h2>Categorieën</h2>
