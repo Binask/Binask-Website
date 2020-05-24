@@ -33,7 +33,7 @@ if (isset($_POST['add'])){
     if ($conn->query($sql) === TRUE) {
         $status = "Verwijderd!";
     } else {
-        $status = $sql . "<br>" . $conn->error;
+        echo "<script type='text/javascript'>alert('Deze categorie wordt nog door een of meerdere bronnen gebruikt.');</script>";
     }
 } elseif (isset($_POST['edit'])) {
     $editID = test_input($_POST['id']);

@@ -30,7 +30,7 @@ if(isset($_POST['bewerken'])){
     }
 } elseif (isset($_POST['delete'])) {
     $userID = $_POST['id'];
-    $sql = "DELETE FROM user WHERE id = $userID";
+    $sql = "DELETE FROM user WHERE user_id = $userID";
     if ($conn->query($sql) === TRUE) {
         $status = "Verwijderd!";
     } else {
