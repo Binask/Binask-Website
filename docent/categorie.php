@@ -10,8 +10,9 @@ $name = "";
 if (isset($_POST['add'])){
     if (empty($_POST['editID'])) {
         $catName = test_input($_POST['catName']);
-        $sql = "INSERT INTO category (category_name) VALUES ('$catName')";
-        if ($conn->query($sql) === TRUE) {
+        $sql = $conn->prepare("INSERT INTO category (category_name) VALUES (?)");
+        $sql->bind_param("s", $catName);
+        if ($sql->execute()) {
             $status = "Toegevoegd!";
         } else {
             $status = $sql . "<br>" . $conn->error;
@@ -19,8 +20,9 @@ if (isset($_POST['add'])){
     } else {
         $catName = test_input($_POST['catName']);
         $catID = test_input($_POST['editID']);
-        $sql = "UPDATE category SET category_name = '$catName' WHERE category_id = $catID ";
-        if ($conn->query($sql) === TRUE) {
+        $sql = $conn->prepare("UPDATE category SET category_name = ? WHERE category_id = ? ");
+        $sql->bind_param("si", $catName, $catID);
+        if ($sql->execute()) {
             $status = "Aangepast!";
         } else {
             $status = $sql . "<br>" . $conn->error;
@@ -29,8 +31,9 @@ if (isset($_POST['add'])){
 
 } elseif (isset($_POST['delete'])) {
     $catID = test_input($_POST['id']);
-    $sql = "DELETE FROM category WHERE category_id = $catID";
-    if ($conn->query($sql) === TRUE) {
+    $sql = $conn->prepare("DELETE FROM category WHERE category_id = ?");
+    $sql->bind_param("i",  $catID);
+    if ($sql->execute()) {
         $status = "Verwijderd!";
     } else {
         echo "<script type='text/javascript'>alert('Deze categorie wordt nog door een of meerdere bronnen gebruikt.');</script>";

@@ -19,8 +19,9 @@ if(isset($_POST['bewerken'])){
         $userEmail = test_input($_POST['userEmail']);
         $userUsertype = test_input($_POST['userUsertype']);
 
-        $sql = "UPDATE user SET user_id = '$userID', firstname = '$userFirstname', lastname = '$userLastname', email = '$userEmail', usertype = '$userUsertype' WHERE user_id = $userID ";
-        if ($conn->query($sql) === TRUE) {
+        $sql = $conn->prepare("UPDATE user SET user_id = ?, firstname = ?, lastname = ?, email = ?, usertype = ? WHERE user_id = ?");
+        $sql->bind_param("issssi", $userID, $userFirstname, $userLastname, $userEmail, $userUsertype, $userID);
+        if ($sql->execute()) {
             $status = "Bewerkt!";
         } else {
             $status = $sql . "<br>" . $conn->error;
@@ -30,8 +31,9 @@ if(isset($_POST['bewerken'])){
     }
 } elseif (isset($_POST['delete'])) {
     $userID = $_POST['id'];
-    $sql = "DELETE FROM user WHERE user_id = $userID";
-    if ($conn->query($sql) === TRUE) {
+    $sql = $conn->prepare("DELETE FROM user WHERE user_id = ?");
+    $sql->bind_param("i", $userID);
+    if ($sql->execute()) {
         $status = "Verwijderd!";
     } else {
         $status = $sql . "<br>" . $conn->error;

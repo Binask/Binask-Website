@@ -21,8 +21,9 @@ if(isset($_POST['add'])){
         $artikelCat = test_input($_POST['artikelCat']);
         $artikelRank = test_input($_POST['artikelRank']);
 
-        $sql = "INSERT INTO Artikelen(ArtikelTitel, ArtikelSamenvatting, ArtikelLink, ArtikelRank, category_id) VALUES ('$artikelTitel', '$artikelSamenv', '$artikelLink', '$artikelRank', '$artikelCat')";
-        if ($conn->query($sql) === TRUE) {
+        $sql = $conn->prepare("INSERT INTO Artikelen(ArtikelTitel, ArtikelSamenvatting, ArtikelLink, ArtikelRank, category_id) VALUES (?, ?, ?, ?, ?");
+        $sql->bind_param("sssii",  $artikelTitel, $artikelSamenv, $artikelLink, $artikelRank, $artikelCat);
+        if ($sql->execute()) {
             $status = "Toegevoegd!";
         } else {
             $status = $sql . "<br>" . $conn->error;
@@ -35,8 +36,9 @@ if(isset($_POST['add'])){
         $artikelCat = test_input($_POST['artikelCat']);
         $artikelRank = test_input($_POST['artikelRank']);
 
-        $sql = "UPDATE Artikelen SET id = '$artikelID', ArtikelTitel = '$artikelTitel', ArtikelSamenvatting = '$artikelSamenv', ArtikelLink = '$artikelLink', ArtikelRank = '$artikelRank', category_id = '$artikelCat' WHERE id = $artikelID ";
-        if ($conn->query($sql) === TRUE) {
+        $sql = $conn->prepare("UPDATE Artikelen SET id = ?, ArtikelTitel = ?, ArtikelSamenvatting = ?, ArtikelLink = ?, ArtikelRank = ?, category_id = ? WHERE id = ?");
+        $sql->bind_param("isssiii",  $artikelID, $artikelTitel, $artikelSamenv, $artikelLink, $artikelRank, $artikelCat, $artikelID);
+        if ($sql->execute()) {
             $status = "Bewerkt!";
         } else {
             $status = $sql . "<br>" . $conn->error;
@@ -44,8 +46,9 @@ if(isset($_POST['add'])){
     }
 } elseif (isset($_POST['delete'])) {
     $artikelID = $_POST['id'];
-    $sql = "DELETE FROM Artikelen WHERE id = $artikelID";
-    if ($conn->query($sql) === TRUE) {
+    $sql = $conn->prepare("DELETE FROM Artikelen WHERE id = ?");
+    $sql->bind_param("i",  $artikelID);
+    if ($sql->execute()) {
         $status = "Verwijderd!";
     } else {
         $status = $sql . "<br>" . $conn->error;
