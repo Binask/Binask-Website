@@ -1,10 +1,9 @@
 <?php
 include "database.php";
+include "validatie.php";
 
 $firstnameErr = $lastnameErr = $emailErr = $passwordErr = $repeatpasswordErr = "";
 $firstname = $lastname = $email = $password = $repeatpassword = $hashedpassword = "";
-
-
 
 if (!empty($_POST)) {
 
@@ -95,7 +94,7 @@ include "head.php";
 <body>
 <h1 class="titel">BiNaSk</h1>
 <?php include "navbar.php" ?>
-<form class="form-registratie" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form class="form-style" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <h1 class="h1 mb-3 text-center">Registratie</h1>
     <div class="form-group">
         <label class="labels" for="voornaam"><b>Voornaam:</b></label>
@@ -123,7 +122,7 @@ include "head.php";
                required>
         <span class="error"><span class="red"><?php echo $repeatpasswordErr; ?></span></span>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" name="register" type="submit">Registreren</button>
+    <button class="form-btn btn btn-lg btn-primary btn-block" name="register" type="submit">Registreren</button>
 </form>
 </body>
 </html>

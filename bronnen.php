@@ -1,6 +1,7 @@
 <?php
 include "session.php";
 include "database.php";
+include "validatie.php";
 include "head.php";
 
 function ShowCategories($conn){
@@ -55,7 +56,7 @@ function ShowArtikelen($conn){
 }
 
 function ShowZoekResultaat($conn){
-    $search = $_POST['search'];
+    $search = test_input($_POST['search']);
 
     $query = "SELECT c.category_name, a.ArtikelTitel, a.ArtikelSamenvatting, a.ArtikelLink, a.ArtikelRank FROM Artikelen a JOIN category c ON a.category_id = c.category_id WHERE ArtikelTitel LIKE '%$search%' OR ArtikelSamenvatting LIKE '%$search%' ORDER BY ArtikelRank ASC ";
     $result = mysqli_query($conn, $query);

@@ -1,5 +1,6 @@
 <?php
 include "database.php";
+include "validatie.php";
 
 //sessie starten
 session_start();
@@ -42,7 +43,7 @@ include "head.php";
 <h1 class="titel">BiNaSk</h1>
 <?php include "navbar.php" ?>
 
-<form class="form-login" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form class="form-style" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <h1 class="h1 mb-3 text-center">Inloggen</h1>
     <div class="form-group">
         <label class="labels" for="email"><b>Email:</b></label>
@@ -53,7 +54,7 @@ include "head.php";
         <input class="form-control input-lg" type="password" placeholder="Wachtwoord" name="password" required>
         <span class="error"><span class="red"><?php echo $loginErr; ?></span></span>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" name="login" type="submit">Inloggen</button>
+    <button class="form-btn btn btn-lg btn-primary btn-block" name="login" type="submit">Inloggen</button>
 </form>
 
 </body>
